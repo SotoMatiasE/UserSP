@@ -1,10 +1,8 @@
 package com.example.userssp
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                 .setTitle(getString(R.string.dialog_title))
                 .setView(dialogView)
                 .setCancelable(false) //eso hace que el dialog no se cancele
-                .setPositiveButton(R.string.dialog_confirm) { dialosInterface, i ->
+                .setPositiveButton(R.string.dialog_confirm) { _, _ ->
                     //extraer lo insertado en el editText y guardar env val
                     val userName = dialogView.findViewById<TextInputEditText>(R.id.edUserName)
                         .text.toString()
@@ -51,6 +49,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                     }
                     Toast.makeText(this, R.string.register_ok, Toast.LENGTH_SHORT).show()
                 }
+                .setNeutralButton(R.string.dialog_neutral, null)
                 .show()
         }else {
             val username = preferences.getString(getString(R.string.sp_username), getString(R.string.hint_username))

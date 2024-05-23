@@ -27,10 +27,10 @@ class UserAdapter(private val users: List<User>, private val listener: OnClickLi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users.get(position) //tomamos el obj user
-
+        val humanPosition = position + 1
         with(holder){
-            setListener(user, position) //vincular cada elemento con el listener, adapter configurado
-            binding.tvOrder.text = (position + 1).toString()
+            setListener(user, humanPosition) //vincular cada elemento con el listener, adapter configurado
+            binding.tvOrder.text = (humanPosition).toString()
             binding.tvName.text = user.getFullName()
             Glide.with(context)
                 .load(user.url)
