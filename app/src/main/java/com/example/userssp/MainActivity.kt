@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.userssp.databinding.ActivityMainBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 
 class MainActivity : AppCompatActivity(), OnClickListener {
 
@@ -32,14 +34,27 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
         //Almacenar dato permanentemente
         if (isFirstTime) {
+            val dialogView = layoutInflater.inflate(R.layout.dialos_registrer, null)
             MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.dialog_title))
+                .setView(dialogView)
+                .setCancelable(false) //eso hace que el dialog no se cancele
                 .setPositiveButton(R.string.dialog_confirm) { dialosInterface, i ->
-                    preferences.edit().putBoolean(getString(R.string.sp_first_time), false).apply()
+                    //extraer lo insertado en el editText y guardar env val
+                    val userName = dialogView.findViewById<TextInputEditText>(R.id.edUserName)
+                        .text.toString()
+                    with(preferences.edit()) {
+                        putBoolean(getString(R.string.sp_first_time), false)
+                        putString(getString(R.string.sp_username), userName)
+                            //insertar datos
+                            .apply()
+                    }
+                    Toast.makeText(this, R.string.register_ok, Toast.LENGTH_SHORT).show()
                 }
-                .setNeutralButton("Cancelar", null)
                 .show()
-
+        }else {
+            val username = preferences.getString(getString(R.string.sp_username), getString(R.string.hint_username))
+            Toast.makeText(this, "Bienvenido al imalaya $username", Toast.LENGTH_SHORT).show()
         }
 
         //userAdapter recibe un Listado
