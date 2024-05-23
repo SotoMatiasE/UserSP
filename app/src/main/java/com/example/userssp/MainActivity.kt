@@ -1,13 +1,14 @@
 package com.example.userssp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.userssp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var userAdapter: UserAdapter
     private lateinit var linearLayoutManager: RecyclerView.LayoutManager
@@ -19,10 +20,11 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        userAdapter = UserAdapter(getUsers()) //userAdapter recibe un Listado
+        userAdapter = UserAdapter(getUsers(), this) //userAdapter recibe un Listado
         linearLayoutManager = LinearLayoutManager(this) //
 
         binding.recyclerView.apply {
+            setHasFixedSize(true) //se indica que las vistas tienen un tamaño definido
             layoutManager = linearLayoutManager
             adapter = userAdapter
         }
@@ -58,5 +60,10 @@ class MainActivity : AppCompatActivity() {
         users.add(juan)
         users.add(maria)
         return users
+    }
+
+    override fun onClick(user: User, position: Int) {
+        //el mensaje muestra que posision ocupa del listado y el nombre del usueario completo
+        Toast.makeText(this, "$position: ${user.getFullName()}" , Toast.LENGTH_SHORT).show()
     }
 }

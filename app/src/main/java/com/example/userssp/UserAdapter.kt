@@ -11,7 +11,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.userssp.databinding.ItemUserBinding
 
 //
-class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdapter.ViewHolder>()
+class UserAdapter(private val users: List<User>, private val listener: OnClickListener) :
+    RecyclerView.Adapter<UserAdapter.ViewHolder>()
 {
 
     //VARIABLE PARA INFLAR LA VISTA
@@ -29,6 +30,7 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
         val user = users.get(position) //tomamos el obj user
 
         with(holder){
+            setListener(user, position) //vincular cada elemento con el listener, adapter configurado
             binding.tvOrder.text = (position + 1).toString()
             binding.tvName.text = user.getFullName()
             Glide.with(context)
@@ -44,5 +46,11 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val binding = ItemUserBinding.bind(view)
+
+        fun setListener(user: User, position: Int){
+            binding.root.setOnClickListener {
+                listener.onClick(user, position)
+            }
+        }
     }
 }
