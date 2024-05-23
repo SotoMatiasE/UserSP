@@ -1,14 +1,13 @@
 package com.example.userssp
 
 import android.content.Context
-import android.icu.text.Transliterator.Position
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.userssp.databinding.ItemUserBinding
+import com.example.userssp.databinding.ItemUserAlterBinding
 
 //
 class UserAdapter(private val users: List<User>, private val listener: OnClickListener) :
@@ -20,7 +19,7 @@ class UserAdapter(private val users: List<User>, private val listener: OnClickLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
-        val view = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_user_alter, parent, false)
 
         return ViewHolder(view)
         //inflamos la vista de item pero necesita de onBindViewHolder para rellenar la informacion
@@ -45,7 +44,7 @@ class UserAdapter(private val users: List<User>, private val listener: OnClickLi
     override fun getItemCount(): Int = users.size //indica cuantos elementos hay en el Adapter
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val binding = ItemUserBinding.bind(view)
+        val binding = ItemUserAlterBinding.bind(view)
 
         fun setListener(user: User, position: Int){
             binding.root.setOnClickListener {
