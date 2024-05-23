@@ -1,12 +1,16 @@
 package com.example.userssp
 
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.userssp.databinding.ActivityMainBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity(), OnClickListener {
 
@@ -20,7 +24,26 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        userAdapter = UserAdapter(getUsers(), this) //userAdapter recibe un Listado
+        val preferences = getPreferences(Context.MODE_PRIVATE) //Almacenamiento
+
+        //inicializar preferences
+        val isFirstTime = preferences.getBoolean(getString(R.string.sp_first_time), true)
+        Log.i("SP", "${getString(R.string.sp_first_time)} = $isFirstTime")
+
+        //Almacenar dato permanentemente
+        if (isFirstTime) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title))
+                .setPositiveButton(R.string.dialog_confirm) { dialosInterface, i ->
+                    preferences.edit().putBoolean(getString(R.string.sp_first_time), false).apply()
+                }
+                .setNeutralButton("Cancelar", null)
+                .show()
+
+        }
+
+        //userAdapter recibe un Listado
+        userAdapter = UserAdapter(getUsers(), this)
         linearLayoutManager = LinearLayoutManager(this) //
 
         binding.recyclerView.apply {
