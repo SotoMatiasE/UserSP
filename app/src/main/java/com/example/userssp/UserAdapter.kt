@@ -1,6 +1,7 @@
 package com.example.userssp
 
 import android.content.Context
+import android.icu.text.Transliterator.Position
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,12 +29,13 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
         val user = users.get(position) //tomamos el obj user
 
         with(holder){
-            binding.tvOrder.text = user.id.toString()
+            binding.tvOrder.text = (position + 1).toString()
             binding.tvName.text = user.name
             Glide.with(context)
                 .load(user.url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
+                .centerCrop() //completa el espacio con la img
+                .circleCrop() //imagen redonda
                 .into(binding.imgPhoto)
         }
     }
