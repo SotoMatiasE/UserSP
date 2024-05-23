@@ -1,6 +1,7 @@
 package com.example.userssp
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         //Almacenar dato permanentemente
         if (isFirstTime) {
             val dialogView = layoutInflater.inflate(R.layout.dialos_registrer, null)
-            MaterialAlertDialogBuilder(this)
+            /*MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.dialog_title))
                 .setView(dialogView)
                 .setCancelable(false) //eso hace que el dialog no se cancele
@@ -49,8 +50,35 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                     }
                     Toast.makeText(this, R.string.register_ok, Toast.LENGTH_SHORT).show()
                 }
-                .setNeutralButton(R.string.dialog_neutral, null)
-                .show()
+                .show()*/
+            //Validar Nombre de usuario
+            val dialog = MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.dialog_title))
+                .setView(dialogView)
+                .setCancelable(false) //eso hace que el dialog no se cancele
+                .setPositiveButton(R.string.dialog_confirm) { _, _ ->}
+                .create()
+
+            dialog.show() //primero se debe mostrar el dialog
+
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+                //extraer lo insertado en el editText y guardar env val
+                val userName = dialogView.findViewById<TextInputEditText>(R.id.edUserName)
+                    .text.toString()
+                if (userName.isBlank()){//validacion de registro
+                    Toast.makeText(this, R.string.register_invalid, Toast.LENGTH_SHORT).show()
+                }else {
+                    with(preferences.edit()) {
+                        putBoolean(getString(R.string.sp_first_time), false)
+                        putString(getString(R.string.sp_username), userName)
+                            //insertar datos
+                            .apply()
+                    }
+                    Toast.makeText(this, R.string.register_ok, Toast.LENGTH_SHORT).show()
+                    dialog.dismiss() //manda a cerrar el dialog
+                }
+            }
+
         }else {
             val username = preferences.getString(getString(R.string.sp_username), getString(R.string.hint_username))
             Toast.makeText(this, "Bienvenido al imalaya $username", Toast.LENGTH_SHORT).show()

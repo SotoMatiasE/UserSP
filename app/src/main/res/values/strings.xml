@@ -9,4 +9,5 @@
     <string name="sp_username">username</string>
     <string name="register_ok">Usuario registrado</string>
     <string name="dialog_neutral">Invitado</string>
+    <string name="register_invalid">Ingrese un nombre</string>
 </resources>
