@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.userssp.databinding.ActivityMainBinding
@@ -93,6 +94,19 @@ class MainActivity : AppCompatActivity(), OnClickListener {
             layoutManager = linearLayoutManager
             adapter = userAdapter
         }
+
+        //Eliminar del listado con SWIPE
+        val swipeHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback
+            (0, ItemTouchHelper.LEFT){
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                                    target: RecyclerView.ViewHolder): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                //se define el comportamiento del SWIPE
+                userAdapter.remove(viewHolder.adapterPosition)//devuelve la ubicacion actual del list
+            }
+        })
+        swipeHelper.attachToRecyclerView(binding.recyclerView)
     }
 
     private fun getUsers(): MutableList<User>{
